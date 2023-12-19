@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
 
-TAG := `cat Cargo.toml | grep '^version =' | cut -d " " -f3 | xargs`
+export TAG := `cat Cargo.toml | grep '^version =' | cut -d " " -f3 | xargs`
 WASM_TARGET := '--target wasm32-unknown-unknown'
 
 
@@ -125,8 +125,8 @@ release: verfiy-is-clean
     # make sure git is clean
     git diff --quiet || exit 1
 
-    git tag v{{TAG}}
-    git push origin v{{TAG}}
+    git tag "v$TAG"
+    git push origin "v$TAG"
 
 
 # publishes the current version to cargo.io
