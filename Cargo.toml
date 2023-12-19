@@ -1,0 +1,42 @@
+[package]
+name = "spow"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70.0"
+license = "Apache-2.0"
+authors = ["Sebastian Dobe <sebastiandobe@mailbox.org"]
+categories = ["algorithms", "wasm", "web-programming"]
+keywords = ["hash", "security", "utility", "wasm", "web"]
+description = "Proof of Work for the Server and Client + WASM"
+readme = "README.md"
+repository = "https://github.com/sebadob/spow"
+
+[profile.test]
+inherits = "release"
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-musl", "aarch64-unknown-linux-musl", "wasm32-unknown-unknown"]
+
+# common deps
+[dependencies]
+nom = "7.1.3"
+sha2 = { version = "0.10.8", features = ["asm"] }
+
+# std deps
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+base64 = { version = "0.21.5" }
+chrono = { version = "0.4.31" }
+getrandom = { version = "0.2.11" }
+serde = { version = "1.0.193", features = ["derive"] }
+thiserror = { version = "1.0.50" }
+
+# wasm deps
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+rstest = "0.18.2"
+
+[[bench]]
+name = "main"
+harness = false
