@@ -19,7 +19,7 @@ const CHALLENGE_LEN_B64: usize = 43;
 // 1:20:1702682422:Rhs5wflYb9mpiDQX:F+CSBSpalGG6FvfSUYjN8zw95z/LYd7jnnu+lYhA3wI:0
 const MIN_LEN_VERIFY: usize = 1 + 1 + 2 + 1 + 10 + 1 + SALT_LEN_B64 + 1 + CHALLENGE_LEN_B64 + 1 + 1;
 
-const DEFAULT_DIFFICULTY: u8 = 18;
+const DEFAULT_DIFFICULTY: u8 = 20;
 
 static SECRET: OnceLock<String> = OnceLock::new();
 
@@ -41,71 +41,6 @@ impl From<ParseIntError> for PowError {
     }
 }
 
-// const COUNTER_ALPHABET_LEN: u8 = 26;
-// const COUNTER_ALPHABET_WITH_UPPER_LEN: u8 = 52;
-//
-// #[derive(Debug)]
-// pub struct CharsCounter {
-//     values: Vec<u8>,
-// }
-//
-// impl CharsCounter {
-//     fn new() -> Self {
-//         let mut values = Vec::with_capacity(4);
-//         values.push(0);
-//         Self { values }
-//     }
-//
-//     #[inline(always)]
-//     fn inc(&mut self) {
-//         let curr = self.values.first_mut().unwrap();
-//
-//         if *curr == COUNTER_ALPHABET_WITH_UPPER_LEN - 1 {
-//             // this value is at its max
-//
-//             // reset current value
-//             *curr = 0;
-//
-//             // increase the following values until success or append a new one at the end
-//             let mut idx = 1;
-//             while let Some(next) = self.values.get_mut(idx) {
-//                 if *next == COUNTER_ALPHABET_WITH_UPPER_LEN - 1 {
-//                     *next = 0;
-//                     idx += 1;
-//                 } else {
-//                     *next += 1;
-//                     return;
-//                 }
-//             }
-//
-//             // if we get here, we increased all values before to its max -> append a new one
-//             self.values.push(0);
-//         } else {
-//             *curr += 1;
-//         }
-//     }
-//
-//     #[inline(always)]
-//     fn as_slice(&self) -> &[u8] {
-//         self.values.as_slice()
-//     }
-//
-//     #[inline(always)]
-//     fn to_string(&self) -> String {
-//         let mut s = String::with_capacity(self.values.len());
-//         for i in 0..self.values.len() {
-//             let value = self.values.get(i).expect("pos counter to be correct");
-//             let c = if value >= &COUNTER_ALPHABET_LEN {
-//                 char::from(*value + 65 - COUNTER_ALPHABET_LEN)
-//             } else {
-//                 char::from(*value + 97)
-//             };
-//             s.push(c);
-//         }
-//         s
-//     }
-// }
-
 /// A Proof of Work which is compute-heavy to solve.
 ///
 /// A higher difficulty will increase the calculation time for solving the Proof of Work to grow exponentially.
@@ -116,11 +51,11 @@ impl From<ParseIntError> for PowError {
 /// You must call either `Pow::init()` or `Pow::init_random()` once at application startup.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Pow {
-    version: u8,
-    difficulty: u8,
-    salt: String,
-    challenge: String,
-    expires: i64,
+    pub version: u8,
+    pub difficulty: u8,
+    pub salt: String,
+    pub challenge: String,
+    pub expires: i64,
 }
 
 impl Display for Pow {
@@ -146,6 +81,11 @@ impl Pow {
         let _ = SECRET.set(secret);
     }
 
+    /// The same as `init()`, but initializes a given secret in bytes format
+    pub fn init_bytes(secret: &[u8]) {
+        let _ = SECRET.set(STANDARD_NO_PAD.encode(secret));
+    }
+
     /// The same as `init()`, but initializes a random secret each time.
     pub fn init_random() -> Result<(), PowError> {
         let mut buf = [0u8; 24];
@@ -164,7 +104,7 @@ impl Pow {
     /// Choose a validity as short as possible and as long as needed to prevent PoW re-use without the need for a local
     /// cache with recently used PoW's.
     ///
-    /// The default difficulty of `18` will be chosen, which is reasonable if you use the wasm client in the browser.
+    /// The default difficulty of `20` will be chosen, which is reasonable if you use the wasm client in the browser.
     /// If you however must use JS, which you should only do for a very good reason, you need a way lower difficulty
     /// to not harm the UX.
     pub fn new(valid_seconds: u32) -> Result<Self, PowError> {
@@ -289,7 +229,10 @@ impl Pow {
     }
 
     /// Validate a solved PoW
-    pub fn validate(input: &str) -> Result<(), PowError> {
+    ///
+    /// It will return the challenge after successful validation, which could be used do implement
+    /// re-use mechanisms or something like that.
+    pub fn validate(input: &str) -> Result<&str, PowError> {
         if input.len() < MIN_LEN_VERIFY {
             return Err(PowError::Verify("Invalid input length"));
         }
@@ -328,7 +271,7 @@ impl Pow {
         let hash = Sha256::digest(input.as_bytes());
         let bytes = hash.as_slice();
         if Self::has_leading_zeros(bytes, difficulty) {
-            Ok(())
+            Ok(challenge)
         } else {
             Err(PowError::Verify("Invalid PoW"))
         }
