@@ -54,7 +54,7 @@ which is being used for instance for the Bitcoin blockchain as well.
 
 ## Difficulty
 
-The difficulty is an int between 10 and 99. The default is `18`.  
+The difficulty is an int between 10 and 99. The default is `20`.  
 With each step, the time to solve the puzzle will increase exponentially, while the time to
 validate it in the backend will always stay the same and is independent of the difficulty.
 
@@ -67,7 +67,7 @@ and need way longer than the median value. All of this depends on the random val
 PoW during creation. To find a good value, you should test a lot of different PoW's preferably
 on your target system to find a good median time.  
 This project has a bin target which does exactly that, but actually in the backend. You can
-run it with for instance `cargo run --release 18 100` and it will solve 100 randomly generated
+run it with for instance `cargo run --release 20 100` and it will solve 100 randomly generated
 puzzles with difficulty 20, and at the end print out the median time. Please keep in mind though
 that the backend code is much more performant than the one inside the browser. In first tests,
 the wasm version in the browser needs roughly 2.5 - 3 times the amount of time, that is needed
@@ -76,6 +76,3 @@ in the backend in optimized, pure rust code. The JS version is ~20 times slower 
 The `examples` folder contains a tiny frontend demo using Svelte. It uses a hardcoded
 challenge though, and it only shows how to solve a puzzle at this time. It does not provide
 a good indicator for a median time needed to solve puzzles with these difficulties.
-
-On a mid-range laptop cpu `i7-8565U`, difficulty 18 with wasm in the browser needs a median
-time of ~950 ms.
