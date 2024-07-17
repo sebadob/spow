@@ -28,18 +28,18 @@ self-host it and just integrate it into your API without any external dependenci
 In the backend, it could not be much simpler:
 
 1. At application startup, you need to call either `Pow::init()` or `Pow::init_random()` once.
-This will initialize the secret which is used to sign the challenges, so you know if a challenge
-actually came from your backend, or if someone else has just generated one himself.
+   This will initialize the secret which is used to sign the challenges, so you know if a challenge
+   actually came from your backend, or if someone else has just generated one himself.
 2. If you want to create a new challenge for a client at some point, you then only need to
-create a new PoW with either `Pow::new()` or `Pow::with_difficulty()`. This will create
-a random, unique PoW, which can be converted into a challenge for the client with either
-`.build_challenge()` or `.to_string()`.
+   create a new PoW with either `Pow::new()` or `Pow::with_difficulty()`. This will create
+   a random, unique PoW, which can be converted into a challenge for the client with either
+   `.build_challenge()` or `.to_string()`.
 3. Send the challenge string to the client
 4. The client needs to do some work to solve that puzzle. To do that, you can use a wasm
-or JS-only version. These are in the `frontend/` folder and can be used directly in any 
-frontend. If you do not have a really good reason not to, you should always use the wasm
-version, because it is up to ~20 times faster than JS only. This means you can use higher
-difficulties with no impact on the UX.
+   or JS-only version. These are in the `frontend/` folder and can be used directly in any 
+   frontend. If you do not have a really good reason not to, you should always use the wasm
+   version, because it is up to ~20 times faster than JS only. This means you can use higher
+   difficulties with no impact on the UX.
 5. When you get back a solved puzzle from a client, just `Pow::validate()` it. This will ...
     - validate the version tag
     - validate the difficulty (must be 10 - 99)
