@@ -3,6 +3,7 @@
 ## v0.3.0
 
 - The `asm` feature has been made opt-it, because it is problematic on Windows
+- rebuild the wasm binary with latest updates and wasm-bindgen
 
 ## v0.2.0
 
