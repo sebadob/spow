@@ -16,8 +16,8 @@ opt-level = "s"
 debug = ["dep:console_error_panic_hook"]
 
 [dependencies]
-spow = { path = ".." }
-wasm-bindgen = "0.2.84"
+spow = { path = "..", features = ["client"] }
+wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.39"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by

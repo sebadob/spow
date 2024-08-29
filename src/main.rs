@@ -1,5 +1,5 @@
 // This main function is only used for determining some median values for a given difficulty
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(feature = "server")]
 fn main() -> Result<(), spow::pow::PowError> {
     use spow::pow::Pow;
     use std::cmp::{max, min};
@@ -62,7 +62,7 @@ max:    {} ms
     Ok(())
 }
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(not(feature = "server"))]
 fn main() {
-    panic!("No main() for wasm");
+    panic!("Enabled the `server` feature to compile binary");
 }

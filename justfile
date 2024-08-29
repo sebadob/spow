@@ -21,7 +21,14 @@ clippy:
     clear
 
     cargo clippy
-    cargo clippy {{WASM_TARGET}}
+
+    cargo clippy --features server
+    cargo clippy --features client
+    cargo clippy --features server,client
+
+    cargo clippy --features server {{WASM_TARGET}}
+    cargo clippy --features client {{WASM_TARGET}}
+    cargo clippy --features server,client {{WASM_TARGET}}
 
 
 # clippy lint + check with minimal versions from nightly
@@ -31,11 +38,14 @@ check:
     clear
     cargo update
 
-    echo 'Clippy with defaults'
     cargo +nightly clippy -- -D warnings
+    cargo +nightly clippy --features server -- -D warnings
+    cargo +nightly clippy --features client -- -D warnings
 
     echo 'Checking minimal versions'
-    cargo minimal-versions check
+    cargo minimal-versions check --all-features
+
+    cargo update
 
 
 # prints out the currently set version
