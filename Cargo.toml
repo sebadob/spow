@@ -21,7 +21,9 @@ targets = ["x86_64-unknown-linux-musl", "aarch64-unknown-linux-musl", "wasm32-un
 default = []
 
 asm = ["sha2/asm"]
-client = []
+client = [
+    "getrandom/js"
+]
 server = [
     "dep:base64",
     "dep:chrono",
@@ -40,15 +42,7 @@ base64 = { version = "0.22.1", optional = true }
 chrono = { version = "0.4.31", optional = true }
 serde = { version = "1.0.193", optional = true, features = ["derive"] }
 thiserror = { version = "1.0.50", optional = true }
-
-# std deps
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-getrandom = { version = "0.2.11" }
-
-# wasm deps
-[target.'cfg(target_arch = "wasm32")'.dependencies]
 getrandom = { version = "0.2.11", optional = true, features = ["js"] }
-
 
 [dev-dependencies]
 criterion = { version = "0.5.1", features = ["html_reports"] }
