@@ -3,6 +3,7 @@ name = "wasm-builder"
 version = "0.1.0"
 authors = ["Sebastian Dobe <sd@netit-services.com>"]
 edition = "2021"
+wasm-opt = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -13,6 +14,7 @@ lto = true
 opt-level = "s"
 
 [features]
+server = ["spow/server"]
 debug = ["dep:console_error_panic_hook"]
 
 [dependencies]
