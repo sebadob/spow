@@ -61,11 +61,11 @@ build:
     cargo build --release --target x86_64-unknown-linux-musl
 
 
-# build wasm frontend modules
-build-frontend:
-    #!/usr/bin/env bash
-    clear
+# build wasm modules
+build-wasm: build-wasm-client build-wasm-server
 
+build-wasm-client:
+    #!/usr/bin/env bash
     cd wasm-builder
     rm -rf ../frontend/wasm
     wasm-pack build --release -d ../frontend/wasm --no-pack --out-name spow-wasm
@@ -77,6 +77,13 @@ build-frontend:
     git add ../frontend
     git add ../examples/svelte-wasm/src/spow
 
+build-wasm-server:
+    #!/usr/bin/env bash
+    cd wasm-builder
+    mkdir ../server-wasm
+    wasm-pack build --release -d ../server-wasm --no-pack --out-name spow-server-wasm --features server 
+    rm -rf ../server-wasm/.gitignore
+    git add ../server-wasm
 
 # runs the full set of tests
 test:
