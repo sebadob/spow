@@ -4,24 +4,28 @@
 
 Everyone loves captcha's right? Well, not that much. They are absolutely annoying and often
 even humans cannot solve them, because something is just on the edge or the server on the
-other side simply thinks your stupid and gives you another one.  
+other side simply thinks you're stupid and gives you another one.  
 They provide an absolutely awful UX and the only reason they exist is to prevent spammers.
 
-Proof of Work's (PoW) solve kind of the same task, but without any real impact on the UX, but
-differently. Instead of making the user solve a puzzle, they make your computer solve it
+Proof of Work's (PoW) solve kind of the same task, but without any real impact on the UX, they
+work differently. Instead of making the user solve a puzzle, they make your computer solve it
 for you. The user has nothing else to do than wait a small amount of time until the puzzle
 has been solved automatically.
 
-The idea behind it is that it is just way too costly for any bots and spammers to do this 
-for a single action. If you are just a normal person using an App or a web page, you don't 
-care and will not even notice this small amount of work your computer has to do now
+The idea behind it is that it is just way too costly for any bots and spammers to do this
+for a single action. If you are just a normal person using an App or a web page, you don't
+mind and will probably not even notice this small amount of work your computer has to do now
 and then, but if you are a spammer and are doing this on millions of Apps at the same time,
 it will simply not be possible.
 
 There are really sophisticated solutions to this out there, like
 [Cloudflare Turnstile](https://www.cloudflare.com/products/turnstile/) which I really like.
 This tiny crate however makes it possible to get the same UX while being able to easily
-self-host it and just integrate it into your API without any external dependencies.
+self-host it and just integrate it into your API without any external dependencies. You don't
+even need to run another service on the side. You can either implement the PoW creation into
+your Rust backend directly by using the `spow` crate, or since `v0.4.0` you can find a server
+side prebuilt WASM in `prebuilt/server/wasm`. The server WASM can not only solve, but also
+create and validate PoWs.
 
 ## How?
 
@@ -36,7 +40,7 @@ In the backend, it could not be much simpler:
    `.build_challenge()` or `.to_string()`.
 3. Send the challenge string to the client
 4. The client needs to do some work to solve that puzzle. To do that, you can use a wasm
-   or JS-only version. These are in the `frontend/` folder and can be used directly in any 
+   or JS-only version. These are in the `prebuilt/browser/` folder and can be used directly in any
    frontend. If you do not have a really good reason not to, you should always use the wasm
    version, because it is up to ~20 times faster than JS only. This means you can use higher
    difficulties with no impact on the UX.
