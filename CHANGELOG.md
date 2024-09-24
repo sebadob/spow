@@ -8,6 +8,10 @@ There are now `server` and `client` features that must be enabled properly.
 The old behavior was to simply separate code by target arch. However, this prevented you from compiling the server
 side logic as WASM, which you might want to do in certain cases.
 
+The output directory has changed to `prebuilt/`, because you will now also find prebuilt server side WASM that
+can't only solve a challenge, but also create a new one and validate. This makes it possible to host the server
+side not only from a Rust backend, but basically anything that can work with WASM in the backend like NodeJS.
+
 ## v0.3.0
 
 - The `asm` feature has been made opt-it, because it is problematic on Windows
