@@ -3,7 +3,6 @@ set shell := ["bash", "-uc"]
 export TAG := `cat Cargo.toml | grep '^version =' | cut -d " " -f3 | xargs`
 WASM_TARGET := '--target wasm32-unknown-unknown'
 
-
 # install needed cargo utitlies
 setup:
     #!/usr/bin/env bash
@@ -62,28 +61,27 @@ build:
 
 
 # build wasm modules
-build-wasm: build-wasm-client build-wasm-server
-
-build-wasm-client:
+build-wasm:
     #!/usr/bin/env bash
+
+    rm -rf prebuilt/browser/wasm/*
+    rm -rf prebuilt/server/wasm/*
+
     cd wasm-builder
-    rm -rf ../frontend/wasm
-    wasm-pack build --release -d ../frontend/wasm --no-pack --out-name spow-wasm
-    rm -rf ../frontend/wasm/.gitignore
+    wasm-pack build --release -d ../prebuilt/browser/wasm --no-pack --out-name spow-wasm --features client
+    wasm-pack build --release -d ../prebuilt/server/wasm --no-pack --out-name spow-server-wasm --features server
+    cd ..
 
-    rm -rf ../examples/svelte-wasm/src/spow
-    cp -r ../frontend ../examples/svelte-wasm/src/spow
+    rm -rf examples/svelte-wasm/src/spow
+    cp -r prebuilt/browser examples/svelte-wasm/src/spow
 
-    git add ../frontend
-    git add ../examples/svelte-wasm/src/spow
+    rm -f prebuilt/browser/wasm/.gitignore
+    rm -f prebuilt/server/wasm/.gitignore
+    rm -f examples/svelte-wasm/src/spow/wasm/.gitignore
 
-build-wasm-server:
-    #!/usr/bin/env bash
-    cd wasm-builder
-    mkdir ../server-wasm
-    wasm-pack build --release -d ../server-wasm --no-pack --out-name spow-server-wasm --features server 
-    rm -rf ../server-wasm/.gitignore
-    git add ../server-wasm
+    git add prebuilt
+    git add examples/svelte-wasm/src/spow
+
 
 # runs the full set of tests
 test:

@@ -1,4 +1,5 @@
 let wasm;
+
 export function __wbg_set_wasm(val) {
     wasm = val;
 }
@@ -6,7 +7,7 @@ export function __wbg_set_wasm(val) {
 
 const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
 
-let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+let cachedTextDecoder = new lTextDecoder('utf-8', {ignoreBOM: true, fatal: true});
 
 cachedTextDecoder.decode();
 
@@ -39,7 +40,9 @@ function addHeapObject(obj) {
     return idx;
 }
 
-function getObject(idx) { return heap[idx]; }
+function getObject(idx) {
+    return heap[idx];
+}
 
 function dropObject(idx) {
     if (idx < 132) return;
@@ -70,16 +73,16 @@ let cachedTextEncoder = new lTextEncoder('utf-8');
 
 const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
     ? function (arg, view) {
-    return cachedTextEncoder.encodeInto(arg, view);
-}
+        return cachedTextEncoder.encodeInto(arg, view);
+    }
     : function (arg, view) {
-    const buf = cachedTextEncoder.encode(arg);
-    view.set(buf);
-    return {
-        read: arg.length,
-        written: buf.length
-    };
-});
+        const buf = cachedTextEncoder.encode(arg);
+        view.set(buf);
+        return {
+            read: arg.length,
+            written: buf.length
+        };
+    });
 
 function passStringToWasm0(arg, malloc, realloc) {
 
@@ -133,10 +136,15 @@ function handleError(f, args) {
 }
 
 const PowFinalization = (typeof FinalizationRegistry === 'undefined')
-    ? { register: () => {}, unregister: () => {} }
+    ? {
+        register: () => {
+        }, unregister: () => {
+        }
+    }
     : new FinalizationRegistry(ptr => wasm.__wbg_pow_free(ptr >>> 0, 1));
+
 /**
-*/
+ */
 export class Pow {
 
     __destroy_into_raw() {
@@ -150,14 +158,15 @@ export class Pow {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_pow_free(ptr, 0);
     }
+
     /**
-    * Initialize the PoW backend with a random secret.
-    *
-    * This or `init()` must be called before creating new `Pow` instances.
-    *
-    * You can call `init()` instead of `init_random()` to initialize with a chosen secret, which
-    * is necessary if multiple backends must be allowed to validate challenges.
-    */
+     * Initialize the PoW backend with a random secret.
+     *
+     * This or `init()` must be called before creating new `Pow` instances.
+     *
+     * You can call `init()` instead of `init_random()` to initialize with a chosen secret, which
+     * is necessary if multiple backends must be allowed to validate challenges.
+     */
     static init_random() {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
@@ -171,23 +180,25 @@ export class Pow {
             wasm.__wbindgen_add_to_stack_pointer(16);
         }
     }
+
     /**
-    * Initialize the PoW backend with a chosen secret.
-    *
-    * This or `init_random()` must be called before creating new `Pow` instances.
-    * @param {string} secret
-    */
+     * Initialize the PoW backend with a chosen secret.
+     *
+     * This or `init_random()` must be called before creating new `Pow` instances.
+     * @param {string} secret
+     */
     static init(secret) {
         const ptr0 = passStringToWasm0(secret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.pow_init(ptr0, len0);
     }
+
     /**
-    * Create a new PoW challenge.
-    * @param {number} valid_seconds
-    * @param {number | undefined} [difficulty]
-    * @returns {string}
-    */
+     * Create a new PoW challenge.
+     * @param {number} valid_seconds
+     * @param {number | undefined} [difficulty]
+     * @returns {string}
+     */
     static build_challenge(valid_seconds, difficulty) {
         let deferred2_0;
         let deferred2_1;
@@ -201,7 +212,8 @@ export class Pow {
             var ptr1 = r0;
             var len1 = r1;
             if (r3) {
-                ptr1 = 0; len1 = 0;
+                ptr1 = 0;
+                len1 = 0;
                 throw takeObject(r2);
             }
             deferred2_0 = ptr1;
@@ -212,11 +224,12 @@ export class Pow {
             wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
         }
     }
+
     /**
-    * Perform the work and generate a PoW
-    * @param {string} challenge
-    * @returns {string}
-    */
+     * Perform the work and generate a PoW
+     * @param {string} challenge
+     * @returns {string}
+     */
     static work(challenge) {
         let deferred3_0;
         let deferred3_1;
@@ -232,7 +245,8 @@ export class Pow {
             var ptr2 = r0;
             var len2 = r1;
             if (r3) {
-                ptr2 = 0; len2 = 0;
+                ptr2 = 0;
+                len2 = 0;
                 throw takeObject(r2);
             }
             deferred3_0 = ptr2;
@@ -243,14 +257,15 @@ export class Pow {
             wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
         }
     }
+
     /**
-    * Validate a solved PoW
-    *
-    * It will return the challenge after successful validation, which could be used do implement
-    * re-use mechanisms or something like that.
-    * @param {string} pow
-    * @returns {string}
-    */
+     * Validate a solved PoW
+     *
+     * It will return the challenge after successful validation, which could be used do implement
+     * re-use mechanisms or something like that.
+     * @param {string} pow
+     * @returns {string}
+     */
     static validate(pow) {
         let deferred3_0;
         let deferred3_1;
@@ -266,7 +281,8 @@ export class Pow {
             var ptr2 = r0;
             var len2 = r1;
             if (r3) {
-                ptr2 = 0; len2 = 0;
+                ptr2 = 0;
+                len2 = 0;
                 throw takeObject(r2);
             }
             deferred3_0 = ptr2;
@@ -291,7 +307,7 @@ export function __wbg_crypto_1d1f22824a6a080c(arg0) {
 
 export function __wbindgen_is_object(arg0) {
     const val = getObject(arg0);
-    const ret = typeof(val) === 'object' && val !== null;
+    const ret = typeof (val) === 'object' && val !== null;
     return ret;
 };
 
@@ -315,52 +331,66 @@ export function __wbg_node_104a2ff8d6ea03a2(arg0) {
 };
 
 export function __wbindgen_is_string(arg0) {
-    const ret = typeof(getObject(arg0)) === 'string';
+    const ret = typeof (getObject(arg0)) === 'string';
     return ret;
 };
 
-export function __wbg_require_cca90b1a94a0255b() { return handleError(function () {
-    const ret = module.require;
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_require_cca90b1a94a0255b() {
+    return handleError(function () {
+        const ret = module.require;
+        return addHeapObject(ret);
+    }, arguments)
+};
 
 export function __wbg_msCrypto_eb05e62b530a1508(arg0) {
     const ret = getObject(arg0).msCrypto;
     return addHeapObject(ret);
 };
 
-export function __wbg_randomFillSync_5c9c955aa56b6049() { return handleError(function (arg0, arg1) {
-    getObject(arg0).randomFillSync(takeObject(arg1));
-}, arguments) };
+export function __wbg_randomFillSync_5c9c955aa56b6049() {
+    return handleError(function (arg0, arg1) {
+        getObject(arg0).randomFillSync(takeObject(arg1));
+    }, arguments)
+};
 
-export function __wbg_getRandomValues_3aa56aa6edec874c() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-}, arguments) };
+export function __wbg_getRandomValues_3aa56aa6edec874c() {
+    return handleError(function (arg0, arg1) {
+        getObject(arg0).getRandomValues(getObject(arg1));
+    }, arguments)
+};
 
 export function __wbindgen_is_function(arg0) {
-    const ret = typeof(getObject(arg0)) === 'function';
+    const ret = typeof (getObject(arg0)) === 'function';
     return ret;
 };
 
-export function __wbg_self_3093d5d1f7bcb682() { return handleError(function () {
-    const ret = self.self;
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_self_3093d5d1f7bcb682() {
+    return handleError(function () {
+        const ret = self.self;
+        return addHeapObject(ret);
+    }, arguments)
+};
 
-export function __wbg_window_3bcfc4d31bc012f8() { return handleError(function () {
-    const ret = window.window;
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_window_3bcfc4d31bc012f8() {
+    return handleError(function () {
+        const ret = window.window;
+        return addHeapObject(ret);
+    }, arguments)
+};
 
-export function __wbg_globalThis_86b222e13bdf32ed() { return handleError(function () {
-    const ret = globalThis.globalThis;
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_globalThis_86b222e13bdf32ed() {
+    return handleError(function () {
+        const ret = globalThis.globalThis;
+        return addHeapObject(ret);
+    }, arguments)
+};
 
-export function __wbg_global_e5a3fe56f8be9485() { return handleError(function () {
-    const ret = global.global;
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_global_e5a3fe56f8be9485() {
+    return handleError(function () {
+        const ret = global.global;
+        return addHeapObject(ret);
+    }, arguments)
+};
 
 export function __wbindgen_is_undefined(arg0) {
     const ret = getObject(arg0) === undefined;
@@ -372,20 +402,24 @@ export function __wbg_newnoargs_76313bd6ff35d0f2(arg0, arg1) {
     return addHeapObject(ret);
 };
 
-export function __wbg_call_1084a111329e68ce() { return handleError(function (arg0, arg1) {
-    const ret = getObject(arg0).call(getObject(arg1));
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_call_1084a111329e68ce() {
+    return handleError(function (arg0, arg1) {
+        const ret = getObject(arg0).call(getObject(arg1));
+        return addHeapObject(ret);
+    }, arguments)
+};
 
 export function __wbindgen_object_clone_ref(arg0) {
     const ret = getObject(arg0);
     return addHeapObject(ret);
 };
 
-export function __wbg_call_89af060b4e1523f2() { return handleError(function (arg0, arg1, arg2) {
-    const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
-    return addHeapObject(ret);
-}, arguments) };
+export function __wbg_call_89af060b4e1523f2() {
+    return handleError(function (arg0, arg1, arg2) {
+        const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
+        return addHeapObject(ret);
+    }, arguments)
+};
 
 export function __wbg_getTime_91058879093a1589(arg0) {
     const ret = getObject(arg0).getTime();

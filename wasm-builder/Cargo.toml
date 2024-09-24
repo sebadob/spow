@@ -3,7 +3,6 @@ name = "wasm-builder"
 version = "0.1.0"
 authors = ["Sebastian Dobe <sd@netit-services.com>"]
 edition = "2021"
-wasm-opt = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -15,10 +14,11 @@ opt-level = "s"
 
 [features]
 server = ["spow/server"]
+client = ["spow/client"]
 debug = ["dep:console_error_panic_hook"]
 
 [dependencies]
-spow = { path = "..", features = ["client"] }
+spow = { path = "..", features = [] }
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.39"
 
