@@ -1,4 +1,4 @@
-// Copyright 2023 Sebastian Dobe <sebastiandobe@mailbox.org>
+// Copyright 2025 Sebastian Dobe <sebastiandobe@mailbox.org>
 
 #![doc = include_str!("../README.md")]
 
