@@ -89,7 +89,7 @@ impl Pow {
     /// The same as `init()`, but initializes a random secret each time.
     pub fn init_random() -> Result<(), PowError> {
         let mut buf = [0u8; 24];
-        getrandom::getrandom(&mut buf).map_err(|_| PowError::Randomize)?;
+        getrandom::fill(&mut buf).map_err(|_| PowError::Randomize)?;
         let _ = SECRET.set(STANDARD_NO_PAD.encode(buf));
         Ok(())
     }
@@ -145,7 +145,7 @@ impl Pow {
     #[inline(always)]
     fn salt() -> Result<String, PowError> {
         let mut buf = [0u8; 12];
-        getrandom::getrandom(&mut buf).map_err(|_| PowError::Randomize)?;
+        getrandom::fill(&mut buf).map_err(|_| PowError::Randomize)?;
         Ok(STANDARD_NO_PAD.encode(buf))
     }
 
@@ -293,35 +293,6 @@ mod tests {
     use chrono::Utc;
 
     const SECRET: &str = "MySecureTestSecret1337";
-
-    // #[rstest]
-    // #[case(0, "a")]
-    // #[case(1, "b")]
-    // #[case(2, "c")]
-    // #[case(25, "z")]
-    // #[case(26, "A")]
-    // #[case(51, "Z")]
-    // #[case(52, "aa")]
-    // #[case(53, "ba")]
-    // #[case(54, "ca")]
-    // #[case(77, "za")]
-    // #[case(78, "Aa")]
-    // #[case(103, "Za")]
-    // #[case(104, "ab")]
-    // #[case(105, "bb")]
-    // #[case(106, "cb")]
-    // fn test_chars_counter(#[case] it: usize, #[case] s: &str) {
-    //     let mut counter = CharsCounter::new();
-    //
-    //     for _ in 0..it {
-    //         counter.inc();
-    //     }
-    //     println!("{:?}", counter);
-    //     println!("{:?}", counter.as_slice());
-    //     println!("{}", counter.to_string());
-    //
-    //     assert_eq!(counter.to_string().as_str(), s);
-    // }
 
     #[test]
     fn test_challenge_verify() {
