@@ -1,9 +1,9 @@
 /* tslint:disable */
 
 /* eslint-disable */
-/**
- */
 export class Pow {
+    private constructor();
+
     free(): void;
 
     /**
@@ -20,22 +20,16 @@ export class Pow {
      * Initialize the PoW backend with a chosen secret.
      *
      * This or `init_random()` must be called before creating new `Pow` instances.
-     * @param {string} secret
      */
     static init(secret: string): void;
 
     /**
      * Create a new PoW challenge.
-     * @param {number} valid_seconds
-     * @param {number | undefined} [difficulty]
-     * @returns {string}
      */
-    static build_challenge(valid_seconds: number, difficulty?: number): string;
+    static build_challenge(valid_seconds: number, difficulty?: number | null): string;
 
     /**
      * Perform the work and generate a PoW
-     * @param {string} challenge
-     * @returns {string}
      */
     static work(challenge: string): string;
 
@@ -44,8 +38,6 @@ export class Pow {
      *
      * It will return the challenge after successful validation, which could be used do implement
      * re-use mechanisms or something like that.
-     * @param {string} pow
-     * @returns {string}
      */
     static validate(pow: string): string;
 }
