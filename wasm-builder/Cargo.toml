@@ -18,9 +18,9 @@ client = ["spow/client"]
 debug = ["dep:console_error_panic_hook"]
 
 [dependencies]
-spow = { path = "..", features = [] }
-wasm-bindgen = "0.2.93"
-wasm-bindgen-futures = "0.4.39"
+spow = { path = "..", features = ["client"] }
+wasm-bindgen = "0.2.100"
+wasm-bindgen-futures = "0.4.50"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

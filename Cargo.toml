@@ -1,6 +1,6 @@
 [package]
 name = "spow"
-version = "0.5.0-20250318"
+version = "0.5.0"
 edition = "2021"
 rust-version = "1.70.0"
 license = "Apache-2.0"

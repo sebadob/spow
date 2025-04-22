@@ -56,8 +56,8 @@ impl Pow {
     }
 }
 
-#[cfg(not(feature = "server"))]
 /// Calculates the Proof of Work for the given challenge
+#[cfg(not(feature = "server"))]
 #[wasm_bindgen]
 pub async fn pow_work_wasm(challenge: &str) -> Option<String> {
     #[cfg(feature = "debug")]
