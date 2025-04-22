@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.0
+
+This version just bumps internal dependencies.
+
 ## v0.4.0
 
 ### Breaking
