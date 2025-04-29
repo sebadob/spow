@@ -1,5 +1,4 @@
 let wasm;
-
 export function __wbg_set_wasm(val) {
     wasm = val;
 }
@@ -36,7 +35,7 @@ function handleError(f, args) {
 
 const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
 
-let cachedTextDecoder = new lTextDecoder('utf-8', {ignoreBOM: true, fatal: true});
+let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
 cachedTextDecoder.decode();
 
@@ -59,16 +58,16 @@ let cachedTextEncoder = new lTextEncoder('utf-8');
 
 const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
     ? function (arg, view) {
-        return cachedTextEncoder.encodeInto(arg, view);
-    }
+    return cachedTextEncoder.encodeInto(arg, view);
+}
     : function (arg, view) {
-        const buf = cachedTextEncoder.encode(arg);
-        view.set(buf);
-        return {
-            read: arg.length,
-            written: buf.length
-        };
-    });
+    const buf = cachedTextEncoder.encode(arg);
+    view.set(buf);
+    return {
+        read: arg.length,
+        written: buf.length
+    };
+});
 
 function passStringToWasm0(arg, malloc, realloc) {
 
@@ -114,11 +113,7 @@ function isLikeNone(x) {
 }
 
 const PowFinalization = (typeof FinalizationRegistry === 'undefined')
-    ? {
-        register: () => {
-        }, unregister: () => {
-        }
-    }
+    ? { register: () => {}, unregister: () => {} }
     : new FinalizationRegistry(ptr => wasm.__wbg_pow_free(ptr >>> 0, 1));
 
 export class Pow {
@@ -134,7 +129,6 @@ export class Pow {
         const ptr = this.__destroy_into_raw();
         wasm.__wbg_pow_free(ptr, 0);
     }
-
     /**
      * Initialize the PoW backend with a random secret.
      *
@@ -149,7 +143,6 @@ export class Pow {
             throw takeFromExternrefTable0(ret[0]);
         }
     }
-
     /**
      * Initialize the PoW backend with a chosen secret.
      *
@@ -161,7 +154,6 @@ export class Pow {
         const len0 = WASM_VECTOR_LEN;
         wasm.pow_init(ptr0, len0);
     }
-
     /**
      * Create a new PoW challenge.
      * @param {number} valid_seconds
@@ -176,8 +168,7 @@ export class Pow {
             var ptr1 = ret[0];
             var len1 = ret[1];
             if (ret[3]) {
-                ptr1 = 0;
-                len1 = 0;
+                ptr1 = 0; len1 = 0;
                 throw takeFromExternrefTable0(ret[2]);
             }
             deferred2_0 = ptr1;
@@ -187,7 +178,6 @@ export class Pow {
             wasm.__wbindgen_free(deferred2_0, deferred2_1, 1);
         }
     }
-
     /**
      * Perform the work and generate a PoW
      * @param {string} challenge
@@ -203,8 +193,7 @@ export class Pow {
             var ptr2 = ret[0];
             var len2 = ret[1];
             if (ret[3]) {
-                ptr2 = 0;
-                len2 = 0;
+                ptr2 = 0; len2 = 0;
                 throw takeFromExternrefTable0(ret[2]);
             }
             deferred3_0 = ptr2;
@@ -214,7 +203,6 @@ export class Pow {
             wasm.__wbindgen_free(deferred3_0, deferred3_1, 1);
         }
     }
-
     /**
      * Validate a solved PoW
      *
@@ -233,8 +221,7 @@ export class Pow {
             var ptr2 = ret[0];
             var len2 = ret[1];
             if (ret[3]) {
-                ptr2 = 0;
-                len2 = 0;
+                ptr2 = 0; len2 = 0;
                 throw takeFromExternrefTable0(ret[2]);
             }
             deferred3_0 = ptr2;
@@ -246,11 +233,9 @@ export class Pow {
     }
 }
 
-export function __wbg_getRandomValues_21a0191e74d0e1d3() {
-    return handleError(function (arg0, arg1) {
-        globalThis.crypto.getRandomValues(getArrayU8FromWasm0(arg0, arg1));
-    }, arguments)
-};
+export function __wbg_getRandomValues_21a0191e74d0e1d3() { return handleError(function (arg0, arg1) {
+    globalThis.crypto.getRandomValues(getArrayU8FromWasm0(arg0, arg1));
+}, arguments) };
 
 export function __wbg_getTime_46267b1c24877e30(arg0) {
     const ret = arg0.getTime();
