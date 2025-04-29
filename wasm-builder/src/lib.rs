@@ -59,7 +59,7 @@ impl Pow {
 /// Calculates the Proof of Work for the given challenge
 #[cfg(not(feature = "server"))]
 #[wasm_bindgen]
-pub async fn pow_work_wasm(challenge: &str) -> Option<String> {
+pub fn pow_work_wasm(challenge: &str) -> Option<String> {
     #[cfg(feature = "debug")]
     utils::set_panic_hook();
     spow::wasm::pow_work(challenge).ok()
