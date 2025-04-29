@@ -37,8 +37,8 @@ impl Pow {
         } else {
             SPow::new(valid_seconds)
         }
-            .map_err(|e| e.to_string())
-            .map(|pow| pow.build_challenge())
+        .map_err(|e| e.to_string())
+        .map(|pow| pow.build_challenge())
     }
 
     /// Perform the work and generate a PoW
