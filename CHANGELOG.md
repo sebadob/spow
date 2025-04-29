@@ -1,13 +1,14 @@
 # Changelog
 
-## UNRELEASED
-
-### Breaking
+## v0.6.0
 
 The function signature for `pow_work_wasm` on the client has been changed and is sync now.
 The main idea why it was async before was, that I wanted to push the calculations to a web worker and retrieve the
 result async. However, after doing this in some of my projects now, it is a lot easier and more straight forward to do
 it with a tiny bit of Javascript boilerplate. This also keeps the wasm size a bit smaller.
+
+This is kind of a breaking change, but at the same time it's not. The currently existing `await` in any JS code will
+just be a noop. However, to have a clean code, you should remove it from this version on.
 
 ## v0.5.0
 
