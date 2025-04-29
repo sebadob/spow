@@ -13,7 +13,6 @@ setup:
     cargo install cargo-minimal-versions
     cargo install cargo-msrv
 
-
 clippy:
     #!/usr/bin/env bash
     set -euxo pipefail
@@ -25,10 +24,9 @@ clippy:
     cargo clippy --features client
     cargo clippy --features server,client
 
-    cargo clippy --features server {{WASM_TARGET}}
-    cargo clippy --features client {{WASM_TARGET}}
-    cargo clippy --features server,client {{WASM_TARGET}}
-
+    cargo clippy --features server {{ WASM_TARGET }}
+    cargo clippy --features client {{ WASM_TARGET }}
+    cargo clippy --features server,client {{ WASM_TARGET }}
 
 # clippy lint + check with minimal versions from nightly
 check:
@@ -46,11 +44,9 @@ check:
 
     cargo update
 
-
 # prints out the currently set version
 version:
-    echo {{TAG}}
-
+    echo {{ TAG }}
 
 # builds the code
 build:
@@ -58,7 +54,6 @@ build:
     set -euxo pipefail
     # build as musl to make sure this works
     cargo build --release --target x86_64-unknown-linux-musl
-
 
 # build wasm modules
 build-wasm:
@@ -82,14 +77,12 @@ build-wasm:
     git add prebuilt
     git add examples/svelte-wasm/src/spow
 
-
 # runs the full set of tests
 test:
     #!/usr/bin/env bash
     set -euxo pipefail
     clear
     cargo test
-
 
 # runs the example svelte ui for testing wasm
 run-js:
@@ -98,20 +91,16 @@ run-js:
     cd examples/svelte-wasm
     npm run dev
 
-
 # verifies the MSRV
 msrv-verify:
     cargo msrv verify
-
 
 # find's the new MSRV, if it needs a bump
 msrv-find:
     cargo msrv --min 1.70.0
 
-
 # verify thats everything is good
 verify: check test build msrv-verify
-
 
 # makes sure everything is fine
 verfiy-is-clean: verify
@@ -123,7 +112,6 @@ verfiy-is-clean: verify
 
     echo all good
 
-
 # sets a new git tag and pushes it
 release: verfiy-is-clean
     #!/usr/bin/env bash
@@ -134,7 +122,6 @@ release: verfiy-is-clean
 
     git tag "v$TAG"
     git push origin "v$TAG"
-
 
 # publishes the current version to cargo.io
 publish: verfiy-is-clean
