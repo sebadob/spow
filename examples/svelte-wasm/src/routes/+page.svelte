@@ -52,7 +52,7 @@
         // `vite.config.js` is necessary.
         now = new Date().getTime();
         resultWasmWorker = await solvePow(challenge) || '';
-        timeTakenWasm = new Date().getTime() - now;
+        timeTakenWasmWorker = new Date().getTime() - now;
         console.log('result from wasm WebWorker after: ' + timeTakenWasm);
     });
 
@@ -73,9 +73,9 @@
 
 <h3>WASM WebWorker - calculated result:</h3>
 <p>
-    {#if resultWasm}
+    {#if timeTakenWasmWorker}
         {resultWasm}<br>
-        Time taken: {timeTakenWasm} ms
+        Time taken: {timeTakenWasmWorker} ms
     {/if}
 </p>
 
