@@ -2,6 +2,7 @@
     import {onMount} from "svelte";
     import {powWorkJs} from "../spow/js/spowJs";
     import {pow_work_wasm} from "../spow/wasm/spow-wasm";
+    import {solvePow} from "$lib/pow";
 
     // test challenge - expected result:
     // 1:20:1702840338:ewxCYK+NgXCdPOKO:wMMz7qoedXxsWt+fOxMsWey/rI1u0UHAvmItuuS3oP0:230289
@@ -21,7 +22,9 @@
 
     /** @type {string | undefined} */
     let resultWasm = '';
+    let resultWasmWorker = '';
     let timeTakenWasm = 0;
+    let timeTakenWasmWorker = 0;
 
     /** @type {string | undefined} */
     let resultJs = '';
@@ -30,7 +33,7 @@
     onMount(async () => {
         // calculate with wasm
         let now = new Date().getTime();
-        resultWasm = await pow_work_wasm(challenge);
+        resultWasm = pow_work_wasm(challenge);
         timeTakenWasm = new Date().getTime() - now;
         console.log('result from wasm after: ' + timeTakenWasm);
 
@@ -40,6 +43,17 @@
         timeTakenJs = new Date().getTime() - now;
         console.log('result from JS after: ' + timeTakenJs);
         console.log(resultJs);
+
+        // A more complicated setup would be to push the calculation to
+        // a WebWorker. The advantage is, that the JS event loop will not
+        // be blocked and the UI stays responsive if calculations take longer.
+        //
+        // To make this work (at least with Svelte), the `worker` section in the
+        // `vite.config.js` is necessary.
+        now = new Date().getTime();
+        resultWasmWorker = await solvePow(challenge) || '';
+        timeTakenWasm = new Date().getTime() - now;
+        console.log('result from wasm WebWorker after: ' + timeTakenWasm);
     });
 
 </script>
@@ -50,6 +64,14 @@
 </p>
 
 <h3>WASM - calculated result:</h3>
+<p>
+    {#if resultWasm}
+        {resultWasm}<br>
+        Time taken: {timeTakenWasm} ms
+    {/if}
+</p>
+
+<h3>WASM WebWorker - calculated result:</h3>
 <p>
     {#if resultWasm}
         {resultWasm}<br>
