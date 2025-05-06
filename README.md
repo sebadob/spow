@@ -80,3 +80,13 @@ in the backend in optimized, pure rust code. The JS version is ~20 times slower 
 The `examples` folder contains a tiny frontend demo using Svelte. It uses a hardcoded
 challenge though, and it only shows how to solve a puzzle at this time. It does not provide
 a good indicator for a median time needed to solve puzzles with these difficulties.
+
+## WASM `getrandom` Backend
+
+If you compile to WASM, you need to specify the `getrandom` backend to use. To do this, create `.cargo/config.toml` and
+paste:
+
+```toml
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+```
