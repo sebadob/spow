@@ -3,7 +3,7 @@
 ## v0.7.0
 
 - Dependencies were bumped.
-- The `asm` feature was removed since it does not exist anymore for the new `sha2` version.
+- The `asm` feature was removed. It does not exist anymore for the new `sha2` version.
 - The MSRV has been bumped to `1.85.1`.
 
 ## v0.6.0
