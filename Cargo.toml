@@ -1,8 +1,8 @@
 [package]
 name = "spow"
-version = "0.6.0"
-edition = "2021"
-rust-version = "1.70.0"
+version = "0.7.0"
+edition = "2024"
+rust-version = "1.85.1"
 license = "Apache-2.0"
 authors = ["Sebastian Dobe <sebastiandobe@mailbox.org"]
 categories = ["algorithms", "wasm", "web-programming"]
@@ -20,7 +20,6 @@ targets = ["x86_64-unknown-linux-musl", "aarch64-unknown-linux-musl", "wasm32-un
 [features]
 default = []
 
-asm = ["sha2/asm"]
 client = []
 server = [
     "dep:base64",
@@ -33,21 +32,21 @@ server = [
 [dependencies]
 # common deps
 nom = "8"
-sha2 = { version = "0.10.8", features = [] }
+sha2 = { version = "0.11", features = [] }
 
 # server
-base64 = { version = "0.22.1", optional = true }
+base64 = { version = "0.23", optional = true }
 chrono = { version = "0.4.31", optional = true }
 serde = { version = "1.0.193", optional = true, features = ["derive"] }
 thiserror = { version = "2", optional = true }
 
 # std deps
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-getrandom = { version = "0.3" }
+getrandom = { version = "0.4" }
 
 # wasm deps
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-getrandom = { version = "0.3", optional = true, features = ["wasm_js"] }
+getrandom = { version = "0.4", optional = true, features = ["wasm_js"] }
 
 
 [dev-dependencies]

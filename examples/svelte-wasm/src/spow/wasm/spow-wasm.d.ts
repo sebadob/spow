@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+
 /**
  * Calculates the Proof of Work for the given challenge
  */

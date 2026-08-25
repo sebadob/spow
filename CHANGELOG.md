@@ -1,11 +1,17 @@
 # Changelog
 
+## v0.7.0
+
+- Dependencies were bumped.
+- The `asm` feature was removed. It does not exist anymore for the new `sha2` version.
+- The MSRV has been bumped to `1.85.1`.
+
 ## v0.6.0
 
-The function signature for `pow_work_wasm` on the client has been changed and is sync now.
-The main idea why it was async before was, that I wanted to push the calculations to a web worker and retrieve the
-result async. However, after doing this in some of my projects now, it is a lot easier and more straight forward to do
-it with a tiny bit of Javascript boilerplate. This also keeps the wasm size a bit smaller.
+The function signature for `pow_work_wasm` on the client has been changed and is sync now. The main idea why it was
+async before was, that I wanted to push the calculations to a web worker and retrieve the result async. However, after
+doing this in some of my projects now, it is a lot easier and more straight forward to do it with a tiny bit of
+Javascript boilerplate. This also keeps the wasm size a bit smaller.
 
 This is kind of a breaking change, but at the same time it's not. The currently existing `await` in any JS code will
 just be a noop. However, to have a clean code, you should remove it from this version on.
@@ -19,12 +25,12 @@ This version just bumps internal dependencies.
 ### Breaking
 
 There are now `server` and `client` features that must be enabled properly.  
-The old behavior was to simply separate code by target arch. However, this prevented you from compiling the server
-side logic as WASM, which you might want to do in certain cases.
+The old behavior was to simply separate code by target arch. However, this prevented you from compiling the server side
+logic as WASM, which you might want to do in certain cases.
 
-The output directory has changed to `prebuilt/`, because you will now also find prebuilt server side WASM that
-can't only solve a challenge, but also create a new one and validate. This makes it possible to host the server
-side not only from a Rust backend, but basically anything that can work with WASM in the backend like NodeJS.
+The output directory has changed to `prebuilt/`, because you will now also find prebuilt server side WASM that can't
+only solve a challenge, but also create a new one and validate. This makes it possible to host the server side not only
+from a Rust backend, but basically anything that can work with WASM in the backend like NodeJS.
 
 ## v0.3.0
 
