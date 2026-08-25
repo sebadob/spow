@@ -1,6 +1,6 @@
 use crate::BitValue;
-use base64::engine::general_purpose::STANDARD_NO_PAD;
 use base64::Engine as _;
+use base64::engine::general_purpose::STANDARD_NO_PAD;
 use chrono::{Duration, Utc};
 use nom::IResult;
 use serde::{Deserialize, Serialize};
@@ -237,6 +237,7 @@ impl Pow {
             return Err(PowError::Verify("Invalid input length"));
         }
 
+        // example input:
         // 1:20:1702684559:OyYuEP70pUiTa3NK:KLk3tEG+Kn79ROObaRMLptwWzYs4OFSfm0FACdAgQ9g:79715
 
         let version = input[..1].parse::<u8>()?;
@@ -289,7 +290,7 @@ impl Pow {
 
 #[cfg(test)]
 mod tests {
-    use crate::pow::{Pow, MIN_LEN_VERIFY};
+    use crate::pow::{MIN_LEN_VERIFY, Pow};
     use chrono::Utc;
 
     const SECRET: &str = "MySecureTestSecret1337";
